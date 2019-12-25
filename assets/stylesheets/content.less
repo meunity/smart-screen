@@ -1,0 +1,24 @@
+.main-content {
+  &--container {
+    margin: .5vw;
+    display: flex;
+    flex: 1;
+    section {
+      @gutter: .5vw;
+      margin: @gutter;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &--left, &--right {
+    width: 20%;
+    flex: 0 1 auto;
+  }
+  &--right {
+
+  }
+  &--middle {
+    width: 60%;
+    flex: 0 1 auto;
+  }
+}
