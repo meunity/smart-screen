@@ -28,7 +28,7 @@ export default {
   }),
   methods: {
     onChosenLayout (val) {
-      if (!val) { return }
+      if (val === undefined) { return }
       this.layoutType = val
     }
   }

@@ -2,7 +2,9 @@
   <content-card row transparent wrap>
     <template v-slot:content>
       <content-card v-for="i in rows" :rows="rows === 9 ? 3 : 4" :key="i">
-        {{ i }}
+        <template v-slot:content>
+          <video-container />
+        </template>
       </content-card>
     </template>
   </content-card>
@@ -10,9 +12,10 @@
 
 <script>
 import ContentCard from '../ContentCard'
+import VideoContainer from '../VideoContainer'
 export default {
   name: 'RegularBox',
-  components: { ContentCard },
+  components: { VideoContainer, ContentCard },
   props: {
     rows: {
       type: [Boolean, Number],

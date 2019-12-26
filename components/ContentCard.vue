@@ -65,11 +65,17 @@ export default {
       display: flex;
       flex: 1;
       background: @medium-blue;
+      flex-direction: column;
     }
     &--content {
       display: flex;
       flex: 1;
       flex-direction: column;
+    }
+    &--header {
+      display: flex;
+      flex: 0 1 auto;
+      width: 100%;
     }
     .content-card-content--row {
       flex-direction: row;
