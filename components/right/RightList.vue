@@ -12,11 +12,13 @@
     </template>
     <template v-slot:content>
       <table>
-        <tr v-for="(a,i) in arr" :key="i">
-          <td>{{ a.timeStr }}</td>
-          <td>{{ a.room }}</td>
-          <td>{{ a.word }}</td>
-        </tr>
+        <tbody>
+          <tr v-for="(a,i) in arr" :key="i">
+            <td>{{ a.timeStr }}</td>
+            <td>{{ a.location }}</td>
+            <td>{{ a.word }}</td>
+          </tr>
+        </tbody>
       </table>
     </template>
   </content-card>
@@ -30,9 +32,9 @@ export default {
   components: { ChartTitle, ContentCard },
   data: () => ({
     arr: [
-      { timeStr: '09:21:34', room: '1号楼102室', word: '发现可疑物品' },
-      { timeStr: '09:21:34', room: '1号楼102室', word: '可疑物品' },
-      { timeStr: '09:21:34', room: '1号楼102室', word: '发现可疑物品' }
+      { timeStr: '09:21:34', location: '1号楼102室', word: '发现可疑物品' },
+      { timeStr: '09:21:34', location: '1号楼102室', word: '可疑物品' },
+      { timeStr: '09:21:34', location: '1号楼102室', word: '发现可疑物品' }
     ]
   })
 }
