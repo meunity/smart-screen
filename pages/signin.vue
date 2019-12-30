@@ -65,22 +65,24 @@ export default {
           return status < 201
         }
       }).then(({ status, data }) => {
-        if (status === 200) {
+        if (status && status === 200) {
           const trueName = data.trueName
           this.$cookies.set('_at', data.accessToken)
           this.$cookies.set('_un', trueName)
           this.setPrivate(name, pwd, decodeURIComponent(trueName))
           this.$router.push('/')
         }
-      }).catch(({ response }) => {
-        if (response.status === 400) {
-          this.alertWord = '密码输入错误'
-        } else if (response.status === 204) {
-          this.alertWord = '无此用户'
+      }).catch((err) => {
+        if (err.response) {
+          if (err.response.status === 400) {
+            this.alertWord = '密码输入错误'
+          } else if (err.response.status === 204) {
+            this.alertWord = '无此用户'
+          }
+          setTimeout(() => {
+            this.alertWord = ''
+          }, 3000)
         }
-        setTimeout(() => {
-          this.alertWord = ''
-        }, 3000)
       }).finally(() => {
         this.status = 0
       })

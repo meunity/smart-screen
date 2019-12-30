@@ -30,7 +30,8 @@ module.exports = {
   */
   plugins: [
     '@/plugins/axios',
-    { src: '@/plugins/cookies', ssr: false }
+    { src: '@/plugins/cookies', ssr: false },
+    { src: '@/plugins/swiper.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

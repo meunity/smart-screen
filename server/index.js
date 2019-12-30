@@ -73,7 +73,7 @@ router.get('/analysis/event/subscribe', (ctx, next) => {
 })
 router.get('/analysis/event/:id', (ctx, next) => {
   ctx.body = {
-    'eventId': 10,
+    'eventId': parseInt(ctx.params.id),
     'locationId': 1,
     'cameraId': 1,
     'triggerModel': '人员聚集',
@@ -125,6 +125,38 @@ router.get('/location/all', (ctx, next) => {
       'mapFile': ''
     }
   ]
+})
+router.get('/analysis/camera', (ctx, next) => {
+  ctx.body = [
+    {
+      'cameraId': 1,
+      'protocol': 'rtsp',
+      'profile': '{"url","rtsp://example.com/onvif_camera/video"}',
+      'userName': 'admin',
+      'password': '123456'
+    },
+    {
+      'cameraId': 3,
+      'protocol': 'onvif',
+      'profile': '{"ip":"172.16.2.123"}',
+      'userName': 'admin',
+      'password': '123456'
+    }
+  ]
+})
+
+router.put('/analysis/event/:id/start-react', (ctx, next) => {
+  ctx.body = {
+    'msgkey': 'react_started',
+    'msgref': 'React started.'
+  }
+})
+
+router.put('/analysis/event/:id/finish-react', (ctx, next) => {
+  ctx.body = {
+    'msgkey': 'react_finished',
+    'msgref': 'React finished.'
+  }
 })
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')

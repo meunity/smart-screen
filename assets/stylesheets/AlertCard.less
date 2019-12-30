@@ -1,0 +1,110 @@
+.canHover {
+  &:hover {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+.cannotHover {
+  &:hover {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.alert-card {
+  width: 50%;
+  min-width: 50%;
+  height: 33%;
+  min-height: 33%;
+  max-height: 33%;
+  flex: 0 1 auto;
+  display: flex;
+
+
+  &--container {
+    display: flex;
+    flex-direction: column;
+    margin: .4vw;
+    width: 100%;
+  }
+
+
+}
+
+.make-border(@border-color) {
+  background: linear-gradient(225deg, transparent 5px, @border-color 7px, transparent 1px),
+  linear-gradient(to right, @border-color 0px, transparent 2px) left no-repeat,
+  linear-gradient(to top, @border-color 0px, transparent 2px) bottom no-repeat,
+    linear-gradient(to bottom,transparent 0px,@border-color 2px,transparent 2px) -8px top no-repeat,
+  linear-gradient(to left, transparent 0px, @border-color 2px, transparent 2px) right 8px no-repeat;
+
+}
+
+.fill-alert {
+  background: linear-gradient(225deg, transparent 15px, @pink 16px, @pink);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+
+}
+
+.alert-color {
+  .make-border(@pink)
+}
+
+.normal-color {
+  .make-border(@sky-blue)
+}
+
+.inner-alert {
+  background: @pink;
+}
+
+.inner-normal {
+  background: @sky-blue;
+}
+
+.alert-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: .3vw;
+  font-size: .8vw;
+}
+
+.alert-title {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: space-between;
+  font-size: .9vw;
+  padding-left: .3vw;
+  padding-top: .2vw;
+  align-items: center;
+
+}
+
+.alert-word--color {
+  color: @pink;
+}
+
+.alert-image {
+  flex: 1 1 auto;
+  background: @deep-blue;
+  margin: 0 .6vw;
+}
+
+.alert-word {
+  padding: .3vw;
+}
+
+.alert-actions {
+  margin-top: auto;
+  width: 100%;
+  padding: .3vw;
+  display: flex;
+  justify-content: space-between;
+}

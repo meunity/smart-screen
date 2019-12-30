@@ -11,12 +11,25 @@
       </chart-title>
     </template>
     <template v-slot:content>
-      <alert-card :status="1" alert-word="发现可疑物品" title="15号楼301室" />
-      <alert-card :status="2" alert-word="发现可疑物品" title="15号楼301室" />
-      <alert-card :status="2" alert-word="发现可疑物品" title="15号楼301室" />
-      <alert-card alert-word="发现可疑物品" title="15号楼301室" finished />
-      <alert-card alert-word="发现可疑物品" title="15号楼301室" finished />
-      <alert-card alert-word="发现可疑物品" title="15号楼301室" finished />
+      <div style="flex: 1;width: 100%;position: relative;">
+        <div style="position: absolute;width: 100%;height: 100%">
+          <swiper :options="swiperOptions">
+            <swiper-slide v-for="(s,i) in slidedArr" :key="'slides'+i" style="height: 100%">
+              <div class="swiper--container">
+                <alert-card
+                  v-for="(a,j) in s"
+                  :key="'arr'+i+j"
+                  :status="a.status"
+                  :title="a.location"
+                  :finished="a.finished"
+                  :alert-word="a.word"
+                  @click.native="onClickAlert(a.eventId)"
+                />
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
+      </div>
     </template>
   </content-card>
 </template>
@@ -25,14 +38,66 @@
 import ContentCard from '../ContentCard'
 import ChartTitle from '../ChartTitle'
 import AlertCard from '../AlertCard'
+
 export default {
   name: 'RightSolution',
-  components: { AlertCard, ChartTitle, ContentCard }
+  components: { AlertCard, ChartTitle, ContentCard },
+  props: {
+    alertList: {
+      type: Array,
+      default: () => ([])
+    }
+  },
+  data: () => ({
+    swiperOptions: {
+      clickable: true
+    },
+    slideNumber: 6
+  }),
+  computed: {
+    slidedArr () {
+      const slideLength = Math.ceil(this.alertList.length / this.slideNumber)
+      const slideArr = []
+      for (let i = 0; i < slideLength; i++) {
+        slideArr.push(this.alertList.slice(i * this.slideNumber, i * this.slideNumber + this.slideNumber))
+      }
+      return slideArr
+    }
+  },
+  methods: {
+    onClickAlert (eventId) {
+      if (!eventId) { return }
+      this.axios({
+        method: 'get',
+        url: `/analysis/event/${eventId}`
+      }).then(({ status, data }) => {
+        if (status === 200) {
+          this.$emit('onClickAlertCard', data)
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 
-<style lang="less" scoped>
-.action-content {
-  line-height: 1;
-}
+<style lang="less">
+  .action-content {
+    line-height: 1;
+  }
+
+  .swiper-container {
+    height: 100%;
+  }
+
+  .swiper--container {
+    flex: 1;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+  }
 </style>

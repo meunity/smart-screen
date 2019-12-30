@@ -8,9 +8,22 @@
       <middle-control @onChosenLayout="onChosenLayout" />
     </section>
     <section class="main-content--right">
-      <right-solution />
-      <right-list />
+      <right-solution :alertList="alertList" @onClickAlertCard="onClickAlertCard" />
+      <right-list :alertList="alertList" />
     </section>
+    <div class="modal">
+      <swiper :options="swiperOption">
+        <swiper-slide>
+          <modal-card />
+        </swiper-slide>
+        <swiper-slide>
+          <modal-card />
+        </swiper-slide>
+        <div slot="button-next" class="swiper-button-next swiper-button-white" />
+        <div slot="button-prev" class="swiper-button-prev swiper-button-white" />
+        <div slot="pagination" class="swiper-pagination" />
+      </swiper>
+    </div>
   </div>
 </template>
 
@@ -22,18 +35,42 @@ import RightSolution from '../components/right/RightSolution'
 import RightList from '../components/right/RightList'
 import MiddleVideo from '../components/middle/MiddleVideo'
 import MiddleControl from '../components/middle/MiddleControl'
+import ModalCard from '../components/ModalCard'
+
 export default {
-  components: { MiddleControl, MiddleVideo, RightList, RightSolution, ContentCard },
+  components: { ModalCard, MiddleControl, MiddleVideo, RightList, RightSolution, ContentCard },
   data: () => ({
     layoutType: 0,
     timer: undefined,
     locationArr: [],
-    alertList: []
+    alertList: [],
+    swiperOption: {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      coverflowEffect: {
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: false
+      },
+      pagination: {
+        el: '.swiper-pagination'
+      }
+    }
   }),
   async beforeRouteEnter (to, from, next) {
     const username = Cookies.get('_un')
     const accessToken = Cookies.get('_at')
-    if (!username || !accessToken) { return next('/signin') }
+    if (!username || !accessToken) {
+      return next('/signin')
+    }
     const instance = axios.create()
     try {
       const { status } = await instance.get('/auth/iamliving', {
@@ -60,21 +97,36 @@ export default {
       next('/signin')
     }
   },
+  mounted () {
+    this.$nextTick(() => {
+      this.getSubscribes()
+    })
+  },
   methods: {
+    onClickAlertCard (data) {
+      const ele = this.alertList.filter(ele => ele.eventId === data.eventId)[0]
+      this.$set(ele, 'status', 1)
+    },
     onChosenLayout (val) {
-      if (val === undefined) { return }
+      if (val === undefined) {
+        return
+      }
       this.layoutType = val
     },
     solveLocation (data = []) {
       const parentArr = []
       for (let i = 0; i < data.length; i++) {
         if (data[i].parentId === 0) {
-          if (data[i].parentId === data[i].locationId) { continue }
+          if (data[i].parentId === data[i].locationId) {
+            continue
+          }
           parentArr.push({ id: data[i].locationId, name: data[i].nodeText })
           continue
         }
         const filterArr = parentArr.filter(ele => ele.id === data[i].parentId)
-        if (filterArr.length === 0) { continue }
+        if (filterArr.length === 0) {
+          continue
+        }
         parentArr.push({
           id: data[i].locationId,
           name: filterArr[0].name + data[i].nodeText
@@ -87,7 +139,9 @@ export default {
         return prev
       }, [])
     },
-    baseRequest (url = '', callback = (arg) => { return arg }) {
+    baseRequest (url = '', params = {}, callback = (arg) => {
+      return arg
+    }) {
       return new Promise((resolve, reject) => {
         this.axios.get(url).then(({ status, data }) => {
           if (status === 200) {
@@ -100,18 +154,18 @@ export default {
     },
     getSubscribes () {
       Promise.all([
-        this.baseRequest('/location/all', this.solveLocation),
-        this.baseRequest('/analysis/event/subscribe')
+        this.baseRequest('/location/all', {}, this.solveLocation),
+        this.baseRequest('/analysis/event/subscribe', { since: new Date().getTime() })
       ]).then((dataArr) => {
-        const locationArr = dataArr[0]
-        this.locationArr = locationArr
+        this.locationArr = dataArr[0]
         this.alertList = this.solveMessages(dataArr[1])
+        console.log(this.alertList)
       }).catch((errs) => {
         console.error(errs)
       })
     },
     getAllCamera () {
-      this.baseRequest('/analysis/camera', this.solveCameraDetail)
+      this.baseRequest('/analysis/camera', {}, this.solveCameraDetail)
         .then((data) => {
 
         }).catch((err) => {
@@ -121,10 +175,13 @@ export default {
     solveMessages (data) {
       return data.reduce((prev, next) => {
         const filtered = this.locationArr.filter(ele => ele.id === next.locationId)
-        if (filtered.length === 0) { return prev }
+        if (filtered.length === 0) {
+          return prev
+        }
         prev.push({
+          eventId: next.eventId,
           location: filtered[0].name,
-          snapshot: 'image/jpeg;base64 ' + next.snapshot,
+          snapshot: 'image/jpeg;base64,' + next.snapshot,
           word: next.triggerModel,
           timeStr: new Date(next.recordStart).toLocaleTimeString('chinese', { hour12: false })
         })
@@ -136,4 +193,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="less">
+.swiper-container{
+  background: transparent;
+}
+</style>
