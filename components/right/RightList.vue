@@ -1,7 +1,7 @@
 <template>
   <content-card :cols="2" bottom-border>
     <template v-slot:title>
-      <chart-title>
+      <chart-title :icon="fileIcon">
         <template v-slot:chartTitle>
           报警列表
         </template>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import fileIcon from '../../assets/images/icons/files.png'
 import ContentCard from '../ContentCard'
 import ChartTitle from '../ChartTitle'
 export default {
@@ -54,6 +55,7 @@ export default {
     }
   },
   data: () => ({
+    fileIcon,
     arr: [
       { timeStr: '09:21:34', location: '1号楼102室', word: '发现可疑物品' },
       { timeStr: '09:21:34', location: '1号楼102室', word: '可疑物品' },

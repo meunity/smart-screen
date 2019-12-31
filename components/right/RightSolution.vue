@@ -3,7 +3,7 @@
     <template v-slot:title>
       <chart-title>
         <template v-slot:chartTitle>
-          报警处理
+          <span class="baojingchuli">报警处理</span>
         </template>
         <template v-slot:chartActions>
           <span class="action-content">查看全部</span>
@@ -21,9 +21,9 @@
                   :key="'arr'+i+j"
                   :status="a.status"
                   :title="a.location"
+                  :snapshot="a.snapshot"
                   :finished="a.finished"
                   :alert-word="a.word"
-                  @click.native="onClickAlert(a.eventId)"
                 />
               </div>
             </swiper-slide>
@@ -83,6 +83,7 @@ export default {
 </script>
 
 <style lang="less">
+  @import "../../assets/stylesheets/variables";
   .action-content {
     line-height: 1;
   }
@@ -95,9 +96,23 @@ export default {
     flex: 1;
     flex-direction: row;
     display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: auto;
     flex-wrap: wrap;
     width: 100%;
     min-height: 100%;
     height: 100%;
+  }
+  .baojingchuli {
+    color: @pink;
+
+    &::before {
+      background: @pink;
+      color: @pink;
+      content: '..';
+      margin-right: 10px;
+    }
   }
 </style>

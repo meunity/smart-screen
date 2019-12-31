@@ -1,30 +1,30 @@
 <template>
-    <div class="modal-card">
-      <div class="fill-alert">
-        <div class="modal-title">
-          <div class="modal-title--big">
-            一级报警
-          </div>
-          <div class="modal-title--small">
-            <span>警情：人员聚集</span>
-            <span>1号楼102室</span>
-            <span>|</span>
-            <span>09:35:54</span>
-          </div>
+  <div class="modal-card">
+    <div class="fill-alert">
+      <div class="modal-title">
+        <div class="modal-title--big">
+          一级报警
         </div>
-        <div class="modal-content">
-          <img src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" alt="">
-        </div>
-        <div class="modal-actions">
-          <button v-show="!solved" @click="solve">
-            立即处置
-          </button>
-          <button v-show="solved" @click="applied">
-            已应用
-          </button>
+        <div class="modal-title--small">
+          <span>警情：人员聚集</span>
+          <span>1号楼102室</span>
+          <span>|</span>
+          <span>09:35:54</span>
         </div>
       </div>
+      <div class="modal-content">
+        <img src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" alt="">
+      </div>
+      <div class="modal-actions">
+        <button v-show="!solved" @click="solve">
+          立即处置
+        </button>
+        <button v-show="solved" @click="applied">
+          已应用
+        </button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>

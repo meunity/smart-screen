@@ -4,9 +4,7 @@
       <span>{{ currentDate }}</span>
       <span>{{ currentTime }}</span>
     </div>
-    <div @click="$router.push('/')" class="app-header--middle">
-      智能监控系统
-    </div>
+    <div @click="$router.push('/')" class="app-header--middle" />
     <div class="app-header--right">
       <svg
         t="1577255923320"

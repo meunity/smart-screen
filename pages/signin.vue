@@ -47,8 +47,15 @@ export default {
     alertWord: '',
     status: 0
   }),
+  mounted () {
+    if (process.browser) {
+      this.$cookies.remove('_un')
+      this.$cookies.remove('_at')
+      this.resetPrivate()
+    }
+  },
   methods: {
-    ...mapMutations(['setPrivate']),
+    ...mapMutations(['setPrivate', 'resetPrivate']),
     signin () {
       if (!this.password || !this.username) { return }
       const pwd = sha1(this.password).toString()

@@ -31,8 +31,9 @@ export default {
   margin-top: .5vw;
 
   img {
-    width: 10px;
-    height: 10px;
+    margin-left: 10px;
+    height: 1.2vw;
+    margin-right: 2px;
   }
 }
   .title-content {

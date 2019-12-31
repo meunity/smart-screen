@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'canHover': status!==1,'cannotHover': status === 1}" class="alert-card">
+  <div class="alert-card">
     <div :class="{'normal-color': finished,'alert-color': !finished}" class="alert-card--container">
       <div class="alert-title">
         <span :class="{'alert-word--color': !finished}">{{ title }}</span>
@@ -26,7 +26,7 @@
           {{ alertWord }}
         </div>
         <div class="alert-image">
-          <img :src="alertImage" alt="">
+          <img :src="snapshot" alt="">
         </div>
         <div class="alert-actions">
           <span>{{ time }}</span>
@@ -53,7 +53,7 @@ export default {
       type: String,
       default: ''
     },
-    alertImage: {
+    snapshot: {
       type: String,
       default: ''
     },

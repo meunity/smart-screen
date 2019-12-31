@@ -95,6 +95,16 @@
   flex: 1 1 auto;
   background: @deep-blue;
   margin: 0 .6vw;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
 }
 
 .alert-word {
