@@ -12,10 +12,10 @@
           <span>{{ timeStr }}</span>
         </div>
       </div>
-      <div v-if="!solved" class="modal-content">
+      <div v-if="status !== 1" class="modal-content">
         <img :src="snapshot" alt="">
       </div>
-      <div v-if="solved" class="modal-guide">
+      <div v-if="status === 1" class="modal-guide">
         <div class="modal-guide--image">
           <img :src="snapshot" alt="">
         </div>
@@ -25,10 +25,10 @@
         </div>
       </div>
       <div class="modal-actions">
-        <button v-show="!solved" :class="{'canHover': !solved}" @click="solve">
+        <button v-show="status !== 1" :class="{'canHover': !solved}" @click="solve">
           立即处置
         </button>
-        <button v-show="solved" :class="{'canHover': !finished,'cannotHover': finished}" @click="applied">
+        <button v-show="status === 1" :class="{'canHover': !finished,'cannotHover': finished}" @click="applied">
           已应用
         </button>
       </div>
@@ -63,6 +63,10 @@ export default {
     guideLine: {
       type: String,
       default: ''
+    },
+    status: {
+      type: Number,
+      default: 0
     }
   },
   data: () => ({

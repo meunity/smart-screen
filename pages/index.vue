@@ -36,7 +36,8 @@ export default {
     timer: undefined,
     locationArr: [],
     liveStreamArr: [],
-    alertList: []
+    alertList: [],
+    modalList: []
 
   }),
   async beforeRouteEnter (to, from, next) {
@@ -124,6 +125,8 @@ export default {
         this.baseRequest('/analysis/event/subscribe', { since: Date.now() - 1000 * 5 * 60 })
           .then((data) => {
             const arr = this.solveMessages(data)
+            this.modalList = this.solveMessages(data)
+
             for (let i = 0; i < this.alertList.length;) {
               const eventId = this.alertList[i].eventId
               let found = false
@@ -206,6 +209,7 @@ export default {
       ]).then((dataArr) => {
         this.locationArr = dataArr[0]
         this.alertList = this.solveMessages(dataArr[1])
+        this.modalList = this.solveMessages(dataArr[1])
       }).catch((errs) => {
         console.error(errs)
       })

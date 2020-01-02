@@ -8,6 +8,7 @@
           :location="c.location"
           :time-str="c.timeStr"
           :snapshot="c.snapshot"
+          :status="c.status"
           :guide-line="c.reactGuideline"
           @onFinished="onFinished"
           @onSolving="onSolving"
@@ -53,7 +54,7 @@ export default {
   }),
   computed: {
     currentList () {
-      return this.currentId === undefined ? this.alertList.filter(ele => !ele.finished) : this.alertList.filter(ele => ele.eventId === this.currentId)
+      return this.currentId === undefined ? this.alertList.filter(ele => !ele.finished) : this.alertList.filter(ele => !ele.finished && ele.eventId === this.currentId)
     },
     closed () {
       return this.closeModal === true || this.currentList.length === 0

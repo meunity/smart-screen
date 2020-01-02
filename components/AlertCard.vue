@@ -2,7 +2,7 @@
   <div :class="{'canHover': status === 1,'canNotHover': status !== 1}" @click.capture="getSituation" class="alert-card">
     <div :class="{'normal-color': finished,'alert-color': !finished}" class="alert-card--container">
       <div class="alert-title">
-        <span :class="{'alert-word--color': !finished}" style="text-overflow: ellipsis">{{ title }},{{ eventId }}</span>
+        <span :class="{'alert-word--color': !finished}" style="text-overflow: ellipsis">{{ title }}</span>
         <span v-if="finished" style="margin-right: .4vw">
           <svg
             t="1577345161526"
