@@ -1,8 +1,8 @@
 <template>
-  <div class="alert-card">
+  <div :class="{'canHover': status === 1,'canNotHover': status !== 1}" @click.capture="getSituation" class="alert-card">
     <div :class="{'normal-color': finished,'alert-color': !finished}" class="alert-card--container">
       <div class="alert-title">
-        <span :class="{'alert-word--color': !finished}">{{ title }}</span>
+        <span :class="{'alert-word--color': !finished}" style="text-overflow: ellipsis">{{ title }},{{ eventId }}</span>
         <span v-if="finished" style="margin-right: .4vw">
           <svg
             t="1577345161526"
@@ -30,7 +30,7 @@
         </div>
         <div class="alert-actions">
           <span>{{ time }}</span>
-          <span v-if="!finished" :style="{'opacity': status === 1 ? 0.5 : 1}">{{ alertStatus }}</span>
+          <span v-if="!finished" :class="{'canHover': status !== 1,'canNotHover': status === 1}" :style="{'opacity': status === 1 ? 0.5:1}" @click.capture.stop="solveAlert">{{ alertStatus }}</span>
         </div>
       </div>
     </div>
@@ -41,6 +41,10 @@
 export default {
   name: 'AlertCard',
   props: {
+    eventId: {
+      type: Number,
+      default: 0
+    },
     finished: {
       type: Boolean,
       default: false
@@ -79,11 +83,14 @@ export default {
     }
   },
   methods: {
-    changeStatus (status) {
-      if (!status) {
-        return
+    getSituation () {
+      if (this.status === 1) {
+        this.$emit('getSituation', this.eventId)
       }
-      this.status = status
+    },
+    solveAlert () {
+      if (this.eventId === undefined) { return }
+      this.$emit('onSolveAlert', this.eventId)
     }
   }
 }

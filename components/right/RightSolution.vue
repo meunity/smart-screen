@@ -18,12 +18,16 @@
               <div class="swiper--container">
                 <alert-card
                   v-for="(a,j) in s"
-                  :key="'arr'+i+j"
+                  :key="'arr'+i+j+a.eventId"
+                  :event-id="a.eventId"
                   :status="a.status"
                   :title="a.location"
                   :snapshot="a.snapshot"
                   :finished="a.finished"
+                  :time="a.timeStr"
                   :alert-word="a.word"
+                  @getSituation="onClickAlert"
+                  @onSolveAlert="onSolveAlert"
                 />
               </div>
             </swiper-slide>
@@ -65,18 +69,12 @@ export default {
     }
   },
   methods: {
+    onSolveAlert (eventId) {
+      this.$emit('onSolveAlert', eventId)
+    },
     onClickAlert (eventId) {
-      if (!eventId) { return }
-      this.axios({
-        method: 'get',
-        url: `/analysis/event/${eventId}`
-      }).then(({ status, data }) => {
-        if (status === 200) {
-          this.$emit('onClickAlertCard', data)
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
+      if (eventId === undefined) { return }
+      this.$emit('onClickAlertCard', eventId)
     }
   }
 }

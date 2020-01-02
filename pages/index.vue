@@ -8,22 +8,10 @@
       <middle-control @onChosenLayout="onChosenLayout" />
     </section>
     <section class="main-content--right">
-      <right-solution :alertList="alertList" @onClickAlertCard="onClickAlertCard" />
+      <right-solution :alertList="alertList" @onSolveAlert="showModal" @onClickAlertCard="onClickAlertCard" />
       <right-list :alertList="alertList" />
     </section>
-    <!--    <div class="modal">-->
-    <!--      <swiper :options="swiperOption">-->
-    <!--        <swiper-slide>-->
-    <!--          <modal-card />-->
-    <!--        </swiper-slide>-->
-    <!--        <swiper-slide>-->
-    <!--          <modal-card />-->
-    <!--        </swiper-slide>-->
-    <!--        <div slot="button-next" class="swiper-button-next swiper-button-white" />-->
-    <!--        <div slot="button-prev" class="swiper-button-prev swiper-button-white" />-->
-    <!--        <div slot="pagination" class="swiper-pagination" />-->
-    <!--      </swiper>-->
-    <!--    </div>-->
+    <modal-container ref="modalContainer" :alertList="alertList" @onFinishAlert="onFinishAlert" @onSolvingAlert="onSolveAlert" />
   </div>
 </template>
 
@@ -36,10 +24,11 @@ import RightSolution from '../components/right/RightSolution'
 import RightList from '../components/right/RightList'
 import MiddleVideo from '../components/middle/MiddleVideo'
 import MiddleControl from '../components/middle/MiddleControl'
+import ModalContainer from '../components/ModalContainer'
 // import ModalCard from '../components/ModalCard'
 
 export default {
-  components: { MiddleControl, MiddleVideo, RightList, RightSolution, ContentCard },
+  components: { ModalContainer, MiddleControl, MiddleVideo, RightList, RightSolution, ContentCard },
   data: () => ({
     layoutType: 0,
     inter: undefined,
@@ -47,27 +36,8 @@ export default {
     timer: undefined,
     locationArr: [],
     liveStreamArr: [],
-    alertList: [],
-    swiperOption: {
-      effect: 'coverflow',
-      grabCursor: true,
-      centeredSlides: true,
-      slidesPerView: 'auto',
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      },
-      coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: false
-      },
-      pagination: {
-        el: '.swiper-pagination'
-      }
-    }
+    alertList: []
+
   }),
   async beforeRouteEnter (to, from, next) {
     const username = Cookies.get('_un')
@@ -121,9 +91,27 @@ export default {
   },
   methods: {
     ...mapMutations(['resetPrivate']),
-    onClickAlertCard (data) {
-      const ele = this.alertList.filter(ele => ele.eventId === data.eventId)[0]
-      this.$set(ele, 'status', 1)
+    showModal (eventId) {
+      this.$refs.modalContainer.showModal(eventId)
+    },
+    onFinishAlert (eventId) {
+      if (eventId === undefined) { return }
+      for (const a of this.alertList) {
+        if (a.eventId === eventId) {
+          a.finished = true
+        }
+      }
+    },
+    onSolveAlert (eventId) {
+      if (eventId === undefined) { return }
+      for (const a of this.alertList) {
+        if (a.eventId === eventId) {
+          a.status = 1
+        }
+      }
+    },
+    onClickAlertCard (eventId) {
+      this.$refs.modalContainer.showModal(eventId)
     },
     onChosenLayout (val) {
       if (val === undefined) {
@@ -136,7 +124,26 @@ export default {
         this.baseRequest('/analysis/event/subscribe', { since: Date.now() - 1000 * 5 * 60 })
           .then((data) => {
             const arr = this.solveMessages(data)
+            for (let i = 0; i < this.alertList.length;) {
+              const eventId = this.alertList[i].eventId
+              let found = false
+              for (let j = 0; j < arr.length;) {
+                if (eventId === arr[j].eventId) {
+                  arr[j].status = this.alertList[i].status
+                  arr[j].finished = false
+                  this.alertList.splice(i, 1)
+                  found = true
+                  break
+                }
+                j++
+              }
+              if (!found) {
+                this.alertList[i].finished = true
+                i++
+              }
+            }
             this.alertList = arr.concat(this.alertList)
+            this.$refs.modalContainer.showModal()
           }).catch((err) => {
             console.error(err)
           })
@@ -223,6 +230,9 @@ export default {
           location: filtered[0].name,
           snapshot: 'data:image/jpeg;base64,' + next.snapshot,
           word: next.triggerModel,
+          finished: false,
+          status: 0,
+          reactGuideline: next.reactGuideline,
           timeStr: new Date(next.recordStart).toLocaleTimeString('chinese', { hour12: false })
         })
         return prev

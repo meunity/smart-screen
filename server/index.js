@@ -56,7 +56,7 @@ router.get('/analysis/event/subscribe', (ctx, next) => {
     return next()
   }
   const arr = []
-  for (let i = 0; i < Math.ceil(Math.random() * 100); i++) {
+  for (let i = 0; i < Math.ceil(Math.random() * 10); i++) {
     arr.push({
       'eventId': i + 1,
       'locationId': Math.ceil(Math.random() * 5),

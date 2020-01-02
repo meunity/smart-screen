@@ -52,7 +52,7 @@
     }
   }
 }
-.modal-content {
+.modal-content,.modal-guide {
   margin: 1% 5%;
   flex: 1;
   background: transparent;
@@ -60,12 +60,44 @@
   overflow: hidden;
   position: relative;
 
-  img {
+  > img {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     height: 100%;
+  }
+}
+.modal-guide {
+  border: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &--image{
+    flex: 0 1 auto;
+    width: 30%;
+    min-width: 30%;
+    max-width: 30%;
+    overflow: hidden;
+    position: relative;
+    > img {
+      width: 100%;
+      position: absolute;
+      border: 1px solid white;
+
+    }
+  }
+
+  &--content {
+    flex: 1;
+    margin-left: 10px;
+    background: lightcoral;
+
+    > span {
+      margin: 10px;
+      font-size: .8vw;
+    }
   }
 }
 .modal-actions {
@@ -82,9 +114,5 @@
     font-size: 1vmax;
     padding: 1% 10%;
     border: 2px solid white;
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 }

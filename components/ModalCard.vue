@@ -6,20 +6,29 @@
           一级报警
         </div>
         <div class="modal-title--small">
-          <span>警情：人员聚集</span>
-          <span>1号楼102室</span>
+          <span>警情：{{ alertWord }}</span>
+          <span>{{ location }}</span>
           <span>|</span>
-          <span>09:35:54</span>
+          <span>{{ timeStr }}</span>
         </div>
       </div>
-      <div class="modal-content">
-        <img src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" alt="">
+      <div v-if="!solved" class="modal-content">
+        <img :src="snapshot" alt="">
+      </div>
+      <div v-if="solved" class="modal-guide">
+        <div class="modal-guide--image">
+          <img :src="snapshot" alt="">
+        </div>
+        <div class="modal-guide--content">
+          <span style="display: block">处理预案：</span>
+          <span>{{ guideLine }}</span>
+        </div>
       </div>
       <div class="modal-actions">
-        <button v-show="!solved" @click="solve">
+        <button v-show="!solved" :class="{'canHover': !solved}" @click="solve">
           立即处置
         </button>
-        <button v-show="solved" @click="applied">
+        <button v-show="solved" :class="{'canHover': !finished,'cannotHover': finished}" @click="applied">
           已应用
         </button>
       </div>
@@ -46,6 +55,14 @@ export default {
     timeStr: {
       type: String,
       default: ''
+    },
+    snapshot: {
+      type: String,
+      default: 'https://cdn.vuetifyjs.com/images/parallax/material2.jpg'
+    },
+    guideLine: {
+      type: String,
+      default: ''
     }
   },
   data: () => ({
@@ -57,8 +74,17 @@ export default {
       handler (val, old) {
         if (val === old) { return }
         if (val === true) {
-          this.$destroy(true)
-          this.$el.parentNode.removeChild(this.$el)
+          this.$emit('onFinished', this.eventId)
+          // this.$destroy(true)
+          // this.$el.parentNode.removeChild(this.$el)
+        }
+      }
+    },
+    solved: {
+      handler (val, old) {
+        if (val === old) { return }
+        if (val === true) {
+          this.$emit('onSolving', this.eventId)
         }
       }
     }
@@ -91,7 +117,7 @@ export default {
         }
       }).catch((err) => {
         if (err.response && err.response.status === 404) {
-
+          console.log(err)
         }
       })
     }
