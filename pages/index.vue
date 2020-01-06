@@ -125,15 +125,18 @@ export default {
         this.baseRequest('/analysis/event/subscribe', { since: Date.now() - 1000 * 5 * 60 })
           .then((data) => {
             const arr = this.solveMessages(data)
-            this.modalList = this.solveMessages(data)
-
             for (let i = 0; i < this.alertList.length;) {
               const eventId = this.alertList[i].eventId
+              const lastSolved = this.alertList[i].status === 1
               let found = false
               for (let j = 0; j < arr.length;) {
                 if (eventId === arr[j].eventId) {
                   arr[j].status = this.alertList[i].status
                   arr[j].finished = false
+                  // lastResolved只在request成功后更新，为的是避免立即处置后的应用再出现
+                  if (lastSolved) {
+                    arr[j].lastSolved = true
+                  }
                   this.alertList.splice(i, 1)
                   found = true
                   break
@@ -209,7 +212,6 @@ export default {
       ]).then((dataArr) => {
         this.locationArr = dataArr[0]
         this.alertList = this.solveMessages(dataArr[1])
-        this.modalList = this.solveMessages(dataArr[1])
       }).catch((errs) => {
         console.error(errs)
       })
@@ -236,6 +238,7 @@ export default {
           word: next.triggerModel,
           finished: false,
           status: 0,
+          lastSolved: false,
           reactGuideline: next.reactGuideline,
           timeStr: new Date(next.recordStart).toLocaleTimeString('chinese', { hour12: false })
         })

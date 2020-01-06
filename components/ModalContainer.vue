@@ -14,9 +14,9 @@
           @onSolving="onSolving"
         />
       </swiper-slide>
-      <div slot="button-next" class="swiper-button-next swiper-button-white" />
-      <div slot="button-prev" class="swiper-button-prev swiper-button-white" />
-      <div slot="pagination" class="swiper-pagination" />
+      <div slot="button-next" v-if="currentId === undefined" class="swiper-button-next swiper-button-white" />
+      <div slot="button-prev" v-if="currentId === undefined" class="swiper-button-prev swiper-button-white" />
+      <div slot="pagination" v-if="currentId === undefined" class="swiper-pagination" />
     </swiper>
     <div @click="hideModal" class="close-icon">
       <span>返回</span>
@@ -54,10 +54,22 @@ export default {
   }),
   computed: {
     currentList () {
-      return this.currentId === undefined ? this.alertList.filter(ele => !ele.finished) : this.alertList.filter(ele => !ele.finished && ele.eventId === this.currentId)
+      return this.currentId === undefined ? this.alertList.filter(ele => !ele.finished && !ele.lastSolved) : this.alertList.filter(ele => !ele.finished && ele.eventId === this.currentId)
     },
     closed () {
       return this.closeModal === true || this.currentList.length === 0
+    }
+  },
+  watch: {
+    /**
+     * 监视closed变量，一旦应用并关闭modal后重置eventId
+     */
+    closed: {
+      handler (val, old) {
+        if (val) {
+          this.currentId = undefined
+        }
+      }
     }
   },
   methods: {
