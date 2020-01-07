@@ -4,7 +4,9 @@
       <swiper :options="swiperOption">
         <swiper-slide v-for="(l,i) in processedArr" :key="i">
           <div style="height: 100%;display: flex;flex-wrap: wrap">
-            <special-box :streams="l" />
+            <regular-box v-if="boxTypeIndex === 0" :rows="4" />
+            <regular-box v-if="boxTypeIndex === 1" :rows="9" />
+            <special-box v-if="boxTypeIndex === 2" :streams="l" />
           </div>
         </swiper-slide>
         <div slot="pagination" class="swiper-pagination swiper-pagination-blue" />
@@ -18,9 +20,10 @@
 <script>
 import ContentCard from '../ContentCard'
 import SpecialBox from '../boxes/SpecialBox'
+import RegularBox from '../boxes/RegularBox'
 export default {
   name: 'MiddleVideo',
-  components: { SpecialBox, ContentCard },
+  components: { RegularBox, SpecialBox, ContentCard },
   props: {
     boxTypeIndex: {
       type: [Boolean, Number],

@@ -1,8 +1,6 @@
 <template>
   <div class="video-container">
-    <video autoplay playsinline loop muted>
-      <source :src="videoSrc">
-    </video>
+    <!--    <video :src="videoSrc" autoplay playsinline loop muted />-->
   </div>
 </template>
 
@@ -10,7 +8,7 @@
 export default {
   name: 'VideoContainer',
   data: () => ({
-    videoSrc: 'http://q234wsbta.bkt.clouddn.com/xczxg1.mp4'
+    videoSrc: 'rtsp://192.168.100.22:8554/vlc'
   })
 }
 </script>
@@ -22,7 +20,6 @@ export default {
   height: 100%;
   position: relative;
   overflow: hidden;
-
   video {
     position: absolute;
     height: 100%;
