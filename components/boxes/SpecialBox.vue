@@ -11,9 +11,11 @@
 <script>
 import ContentCard from '../ContentCard'
 import VideoContainer from '../VideoContainer'
+import BoxMixin from './BoxMixin'
 export default {
   name: 'SpecialBox',
-  components: { VideoContainer, ContentCard }
+  components: { VideoContainer, ContentCard },
+  mixins: [BoxMixin]
 }
 </script>
 

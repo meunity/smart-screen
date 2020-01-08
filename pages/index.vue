@@ -219,7 +219,6 @@ export default {
     getAllCamera () {
       this.baseRequest('/analysis/camera')
         .then((data) => {
-          console.log(data)
           this.liveStreamArr = data
         }).catch((err) => {
           console.error(err)

@@ -4,9 +4,9 @@
       <swiper :options="swiperOption">
         <swiper-slide v-for="(l,i) in processedArr" :key="i">
           <div style="height: 100%;display: flex;flex-wrap: wrap">
-            <regular-box v-if="boxTypeIndex === 0" :rows="4" />
-            <regular-box v-if="boxTypeIndex === 1" :rows="9" />
-            <special-box v-if="boxTypeIndex === 2" :streams="l" />
+            <regular-box v-if="boxTypeIndex === 0" :live-stream-array="l" :rows="4" />
+            <regular-box v-if="boxTypeIndex === 1" :live-stream-array="l" :rows="9" />
+            <special-box v-if="boxTypeIndex === 2" :live-stream-array="l" />
           </div>
         </swiper-slide>
         <div slot="pagination" class="swiper-pagination swiper-pagination-blue" />
@@ -60,10 +60,20 @@ export default {
           break
         }
       }
-      const count = Math.ceil(this.liveStream.length / slidesNumber)
+      const streams = this.liveStream.map((ele) => {
+        const profile = JSON.parse(JSON.stringify(ele.profile))
+        switch (ele.protocol) {
+          case 'rtsp': return profile.url
+          default: {
+            break
+          }
+        }
+        return ''
+      })
+      const count = Math.ceil(streams.length / slidesNumber)
       const res = []
       for (let i = 0; i < count; i++) {
-        res.push(this.liveStream.slice(i * slidesNumber, i * slidesNumber + slidesNumber))
+        res.push(streams.slice(i * slidesNumber, i * slidesNumber + slidesNumber))
       }
       return res
     }

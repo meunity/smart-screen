@@ -144,14 +144,28 @@ router.get('/analysis/camera', (ctx, next) => {
     {
       'cameraId': 1,
       'protocol': 'rtsp',
-      'profile': '{"url","rtsp://example.com/onvif_camera/video"}',
+      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
+      'userName': 'admin',
+      'password': '123456'
+    },
+    {
+      'cameraId': 2,
+      'protocol': 'rtsp',
+      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
       'userName': 'admin',
       'password': '123456'
     },
     {
       'cameraId': 3,
-      'protocol': 'onvif',
-      'profile': '{"ip":"172.16.2.123"}',
+      'protocol': 'rtsp',
+      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
+      'userName': 'admin',
+      'password': '123456'
+    },
+    {
+      'cameraId': 4,
+      'protocol': 'rtsp',
+      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
       'userName': 'admin',
       'password': '123456'
     }

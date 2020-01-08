@@ -16,6 +16,7 @@
       <param name="loop" value="true">
       <param name="controls" value="false">
       <param name="fullscreen" value="false">
+      <param name="windowless" value="true">
     </object>
   </div>
 </template>
@@ -23,20 +24,33 @@
 <script>
 export default {
   name: 'VideoContainer',
+  props: {
+    url: {
+      type: String,
+      default: ''
+    }
+  },
   mounted () {
-    if (process.browser) {
-      const mrl = 'rtsp://192.168.100.22:8554/vlc'
+    this.$nextTick(() => {
+      this.play(this.url)
+    })
+  },
+  beforeDestroy () {
+    this.release()
+  },
+  methods: {
+    play (url) {
+      const mrl = url
       const vlc = this.$refs.vlc
       const options = ['--rtsp-tcp']
       const id = vlc.playlist.add(mrl, 'monitor', options)
       vlc.playlist.playItem(id)
+    },
+    release () {
+      const vlc = this.$refs.vlc
+      vlc.playlist.stop()
+      vlc.playlist.clear()
     }
-  },
-  beforeDestroy () {
-    this.$refs.vlc.playlist.stop()
-    this.$refs.vlc.playlist.clear()
-    this.$refs.vlc.$destroy(true)
-    this.$refs.vlc.parentNode.removeChild(this.$refs.vlc)
   }
 }
 </script>
@@ -49,9 +63,5 @@ export default {
   position: relative;
   overflow: hidden;
   z-index: 0;
-
-  object {
-    z-index: -100;
-  }
 }
 </style>
