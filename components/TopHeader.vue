@@ -56,7 +56,7 @@ export default {
       this.$cookies.remove('_un')
       this.$cookies.remove('_at')
       this.resetPrivate()
-      this.$router.push('/signin')
+      window.location.href = '/signin'
     }
   }
 }

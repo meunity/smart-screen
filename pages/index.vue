@@ -118,6 +118,7 @@ export default {
       if (val === undefined) {
         return
       }
+      console.log(val)
       this.layoutType = val
     },
     getAlert () {

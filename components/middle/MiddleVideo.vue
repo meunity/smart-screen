@@ -1,18 +1,21 @@
 <template>
-  <content-card :cols="8" over-border transparent>
+  <content-card :cols="8" @click.native="onClick" over-border transparent>
     <template v-slot:content>
-      <swiper :options="swiperOption">
-        <swiper-slide v-for="(l,i) in processedArr" :key="i">
-          <div style="height: 100%;display: flex;flex-wrap: wrap">
-            <regular-box v-if="boxTypeIndex === 0" :live-stream-array="l" :rows="4" />
-            <regular-box v-if="boxTypeIndex === 1" :live-stream-array="l" :rows="9" />
-            <special-box v-if="boxTypeIndex === 2" :live-stream-array="l" />
-          </div>
-        </swiper-slide>
-        <div slot="pagination" class="swiper-pagination swiper-pagination-blue" />
-        <div slot="button-prev" class="swiper-button-prev swiper-button-blue" />
-        <div slot="button-next" class="swiper-button-next swiper-button-blue" />
-      </swiper>
+      <div v-for="(l,i) in processedArr" :key="i" style="height: 100%;display: flex;flex-wrap: wrap">
+        <regular-box v-if="boxTypeIndex === 0" :live-stream-array="l" :rows="4" />
+        <nine-grid-box v-if="boxTypeIndex === 1" :live-stream-array="l" :rows="9" />
+        <special-box v-if="boxTypeIndex === 2" :live-stream-array="l" />
+      </div>
+
+      <!--      <swiper :options="swiperOption">-->
+      <!--        <swiper-slide v-for="(l,i) in processedArr" :key="i">-->
+      <!--          <div style="height: 100%;display: flex;flex-wrap: wrap">-->
+      <!--          </div>-->
+      <!--        </swiper-slide>-->
+      <!--        <div slot="pagination" class="swiper-pagination swiper-pagination-blue" />-->
+      <!--        <div slot="button-prev" class="swiper-button-prev swiper-button-blue" />-->
+      <!--        <div slot="button-next" class="swiper-button-next swiper-button-blue" />-->
+      <!--      </swiper>-->
     </template>
   </content-card>
 </template>
@@ -21,9 +24,10 @@
 import ContentCard from '../ContentCard'
 import SpecialBox from '../boxes/SpecialBox'
 import RegularBox from '../boxes/RegularBox'
+import NineGridBox from '../boxes/NineGridBox'
 export default {
   name: 'MiddleVideo',
-  components: { RegularBox, SpecialBox, ContentCard },
+  components: { NineGridBox, RegularBox, SpecialBox, ContentCard },
   props: {
     boxTypeIndex: {
       type: [Boolean, Number],
@@ -76,6 +80,11 @@ export default {
         res.push(streams.slice(i * slidesNumber, i * slidesNumber + slidesNumber))
       }
       return res
+    }
+  },
+  methods: {
+    onClick () {
+      console.log('clicked')
     }
   }
 }

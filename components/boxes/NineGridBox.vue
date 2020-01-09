@@ -1,3 +1,4 @@
+
 <template>
   <content-card row transparent wrap>
     <template v-slot:content>
@@ -14,8 +15,9 @@
 import ContentCard from '../ContentCard'
 import VideoContainer from '../VideoContainer'
 import BoxMixin from './BoxMixin'
+
 export default {
-  name: 'RegularBox',
+  name: 'NineGridBox',
   components: { VideoContainer, ContentCard },
   mixins: [BoxMixin],
   props: {
