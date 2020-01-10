@@ -140,36 +140,17 @@ router.get('/analysis/camera', (ctx, next) => {
     ctx.status = 401
     return next()
   }
-  ctx.body = [
-    {
+  const arr = []
+  for (let i = 0; i < 10; i++) {
+    arr.push({
       'cameraId': 1,
       'protocol': 'rtsp',
-      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
+      'profile': Math.random() > 0.5 ? { 'url': 'rtsp://localhost/video' } : { 'url': 'rtsp://localhost/video1' },
       'userName': 'admin',
       'password': '123456'
-    },
-    {
-      'cameraId': 2,
-      'protocol': 'rtsp',
-      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
-      'userName': 'admin',
-      'password': '123456'
-    },
-    {
-      'cameraId': 3,
-      'protocol': 'rtsp',
-      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
-      'userName': 'admin',
-      'password': '123456'
-    },
-    {
-      'cameraId': 4,
-      'protocol': 'rtsp',
-      'profile': { 'url': 'rtsp://192.168.100.22:8554/vlc' },
-      'userName': 'admin',
-      'password': '123456'
-    }
-  ]
+    })
+  }
+  ctx.body = arr
 })
 
 router.put('/analysis/event/:id/start-react', (ctx, next) => {

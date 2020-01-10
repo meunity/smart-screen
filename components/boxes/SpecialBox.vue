@@ -1,8 +1,8 @@
 <template>
   <content-card transparent row wrap>
     <template v-slot:content>
-      <div v-for="i in 4" :key="i" class="special-card--container">
-        <video-container />
+      <div v-for="(s,i) in streamArray" :key="i" class="special-card--container">
+        <video-container :url="s" />
       </div>
     </template>
   </content-card>

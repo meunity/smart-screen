@@ -4,8 +4,8 @@
       <content-card top-border />
     </section>
     <section class="main-content--middle">
-      <middle-video :live-stream="liveStreamArr" :box-type-index="layoutType" />
-      <middle-control @onChosenLayout="onChosenLayout" />
+      <middle-video :live-stream="liveStreamArr" :box-type-index="layoutType" :cp="currentPage" />
+      <middle-control @onChosenLayout="onChosenLayout" @OnPageChange="OnPageChange" :pages="pages" />
     </section>
     <section class="main-content--right">
       <right-solution :alertList="alertList" @onSolveAlert="showModal" @onClickAlertCard="onClickAlertCard" />
@@ -31,6 +31,8 @@ export default {
   components: { ModalContainer, MiddleControl, MiddleVideo, RightList, RightSolution, ContentCard },
   data: () => ({
     layoutType: 0,
+    pages: 0,
+    currentPage: 0,
     inter: undefined,
     alertInter: undefined,
     timer: undefined,
@@ -72,6 +74,17 @@ export default {
       next('/signin')
     }
   },
+  watch: {
+    layoutType: {
+      handler (val, old) {
+        if (val === undefined || val === old) {
+          return
+        }
+        this.currentPage = 0
+        this.calcPages()
+      }
+    }
+  },
   mounted () {
     if (process.browser) {
       this.axios.defaults.headers.common.Authorization = 'SIMPLE-TOKEN ' + this.$cookies.get('_at')
@@ -92,6 +105,24 @@ export default {
   },
   methods: {
     ...mapMutations(['resetPrivate']),
+    calcPages () {
+      let slideNumber = 0
+      switch (this.layoutType) {
+        case 0:
+        case 2: {
+          slideNumber = 4
+          break
+        }
+        default: {
+          slideNumber = 9
+          break
+        }
+      }
+      this.pages = Math.ceil(this.liveStreamArr.length / slideNumber)
+    },
+    OnPageChange (val) {
+      this.currentPage = val
+    },
     showModal (eventId) {
       this.$refs.modalContainer.showModal(eventId)
     },
@@ -118,7 +149,6 @@ export default {
       if (val === undefined) {
         return
       }
-      console.log(val)
       this.layoutType = val
     },
     getAlert () {
@@ -221,6 +251,7 @@ export default {
       this.baseRequest('/analysis/camera')
         .then((data) => {
           this.liveStreamArr = data
+          this.calcPages()
         }).catch((err) => {
           console.error(err)
         })

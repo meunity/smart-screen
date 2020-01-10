@@ -1,8 +1,9 @@
 <template>
-  <div v-if="url" class="video-container">
+  <div
+    class="video-container"
+  >
     <object
       ref="vlc"
-      @click="clicked"
       type="application/x-vlc-plugin"
       class="obj"
       pluginspage="http://www.videolan.org"
@@ -31,52 +32,44 @@ export default {
   watch: {
     url: {
       handler (val, old) {
-        if (val !== '') {
-          this.$nextTick(() => {
-            this.release()
-            this.play(val)
-          })
-        } else {
-          this.$nextTick(() => {
-            this.release()
-          })
-        }
-      },
-      immediate: true
+        if (val === old) { return }
+        this.$nextTick(() => {
+          this.play(val)
+        })
+      }
     }
   },
   mounted () {
     this.$nextTick(() => {
-
+      this.play(this.url)
     })
   },
   beforeDestroy () {
-    this.release()
+    // this.release()
   },
   methods: {
     play (url) {
       const mrl = url
       const vlc = this.$refs.vlc
-      if (!vlc || !url) {
+      if (!vlc) {
         return
       }
       const options = ['--rtsp-tcp']
-      const id = vlc.playlist.add(mrl, 'monitor', options)
-      vlc.playlist.playItem(id)
+      vlc.playlist.stop()
+      vlc.playlist.items.clear()
+      if (url) {
+        const id = vlc.playlist.add(mrl, 'monitor', options)
+        vlc.playlist.playItem(id)
+      }
     },
     release () {
       const vlc = this.$refs.vlc
       if (!vlc) {
         return
       }
-      if (vlc.playlist.items.count > 0) {
-        vlc.playlist.stop()
+      if (vlc.playlist.items) {
+        vlc.playlist.items.clear()
       }
-      vlc.playlist.items.clear()
-    },
-
-    clicked () {
-      console.log('clicked')
     }
   }
 }

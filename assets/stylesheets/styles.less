@@ -32,5 +32,16 @@ html {
   display: flex;
   height: 100%;
 }
+.canHover {
+  &:hover {
+    cursor: pointer;
+  }
+}
 
+.cannotHover {
+  &:hover {
+    cursor: none;
+    pointer-events: none;
+  }
+}
 
