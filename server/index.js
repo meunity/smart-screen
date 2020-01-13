@@ -4,6 +4,7 @@ const router = require('koa-router')()
 const { Nuxt, Builder } = require('nuxt')
 const sha1 = require('crypto-js/sha1')
 const koaJwt = require('koa-jwt')
+const cors = require('koa-cors')
 const jsonWebToken = require('jsonwebtoken')
 
 const app = new Koa()
@@ -197,6 +198,7 @@ async function start () {
   } else {
     await nuxt.ready()
   }
+  app.use(cors())
   app.use(router.routes())
   app.use(router.allowedMethods())
   app.use((ctx) => {
