@@ -48,6 +48,10 @@ export default {
     // this.release()
   },
   methods: {
+    /**
+     * 使用vlc插件的api,使用请查看https://wiki.videolan.org/Documentation:WebPlugin/
+     * @param url
+     */
     play (url) {
       const mrl = url
       const vlc = this.$refs.vlc

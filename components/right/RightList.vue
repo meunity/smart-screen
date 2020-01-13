@@ -57,12 +57,8 @@ export default {
   data: () => ({
     fileIcon,
     arr: [
-      { timeStr: '09:21:34', location: '1号楼102室', word: '发现可疑物品' },
-      { timeStr: '09:21:34', location: '1号楼102室', word: '可疑物品' },
-      { timeStr: '09:21:34', location: '1号楼102室', word: '发现可疑物品' },
-      { timeStr: '09:22:34', location: '1号楼102室', word: '发现可疑物品' },
-      { timeStr: '09:22:34', location: '1号楼102室', word: '可疑物品' },
-      { timeStr: '09:22:34', location: '1号楼102室', word: '发现可疑物品' }
+      { timeStr: '', location: '', word: '' }
+
     ],
     swiperOptions: {
       direction: 'vertical',

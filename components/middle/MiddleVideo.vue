@@ -53,6 +53,7 @@ export default {
       }
       const streams = this.liveStream.map((ele) => {
         const profile = JSON.parse(JSON.stringify(ele.profile))
+        // 这里只对rtsp协议做了处理
         switch (ele.protocol) {
           case 'rtsp':
             return profile.url

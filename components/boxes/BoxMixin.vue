@@ -23,11 +23,6 @@ export default {
       }
       return this.liveStreamArray
     }
-  },
-  methods: {
-    showBox (urlArray = []) {
-
-    }
   }
 }
 </script>

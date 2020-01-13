@@ -17,12 +17,7 @@ import BoxMixin from './BoxMixin'
 export default {
   name: 'RegularBox',
   components: { VideoContainer, ContentCard },
-  mixins: [BoxMixin],
-  methods: {
-    onClickVideo () {
-      console.log('clicked')
-    }
-  }
+  mixins: [BoxMixin]
 }
 </script>
 
