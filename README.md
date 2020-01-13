@@ -19,6 +19,10 @@ ffmpeg -re -i D:\BaiduNetdiskDownload\video2.mp4 -rtsp_transport tcp -vcodec h26
 ```
 ffplay rtsp://localhost/video1
 ```
+## run dev
+```
+npm run dev
+```
 
 ## 构建client应用
 
@@ -27,3 +31,7 @@ ffplay rtsp://localhost/video1
 ```
 npm run generate
 ```
+
+### **请务必使用360浏览器打开并安装vlc插件**
+
+![](https://github.com/zzh97228/smart-screen/blob/master/examples/pg1.png)
